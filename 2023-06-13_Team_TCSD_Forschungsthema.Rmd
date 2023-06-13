@@ -1,0 +1,74 @@
+---
+title: "Forschungsthema einreichen"
+author: 'Gruppe: TCSD'
+date: "2023-06-13"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+
+*Bitte knitten, um das Dokument zu lesen*
+
+
+# Aufgabe:
+Bitte reichen Sie Ihr Forschungsthema wie im Workshop in einem Text- oder Markdown-Dokument ein. Teamzusammensetzung: Namen und Kürzel
+
+1. Team (Namen und Kürzel)
+2. Thema/Gegenstand
+3. Definition Knoten/Kanten
+4. Forschungsfragen/Motivation
+5. Datenzugang und Eingrenzung des Sample
+6. ggf. verwandte Studien/Vorstudien
+
+![Scientology, Quelle: https://pinkstinks.de/scientology-und-die-frauen/](https://github.com/ms60640/Scientology_Themenfindung/blob/main/Web_ScientologyUndDieFrauen-1024x683.jpg?raw=true)
+
+## Antworten:
+1. Gruppenname: **Tom Cruise's Stunt Doubles (TCSD)**
+angelehnt an: 
+Why is it that Tom Cruise does his own stunts in every movie?
+Because death is the only way out of the Church of Scientology.
+[Quelle](https://upjoke.com/scientology-jokes)
+
+Gruppe bestehend aus: Marie Starzmann (ms606), Jacqueline Trautmann (jt062), Silas Grittmann (sg196), Sarai Bach (rb096), Silja Kopp (sk381)
+
+2. Das Netzwerk von Scientology Mitgliedern bei einflussreichen Personen in den USA
+
+3. Die Knoten umfassen Personen mit einer Verbindung zu Scientology (Scientology Mtiglieder, Ex-Mitglieder, potenzielle Mitglieder) und einflussreiche Personen (Politiker, Stars, etc.). Die Kanten umfassen Beziehungen der Akteure untereinander. Diese sind dann abhängig von den Recherche-Ergebnissen. Mögliche Beziehungen wären Geldspenden, Freundschaften, genereller Kontakt untereinander, Job-Beziehungen, etc.
+
+4. Wir möchten herausfinden mit wievielen einflussreichen Personen Scientology-Mitglieder vernetzt sind und waren (bei Ex-Mitgliedern). Wir vertreten die Annahme, dass Scientology noch mehr unter einflussreichen Leuten verstrickt ist, als viele annehmen.
+
+5. Wir wollen Personen, welche Verbindungen zu Scientology haben, erheben, die in den USA leben oder dort herkommen und noch immer Verbindungen zur us-amerikanischen Scientology haben. Die USA haben viele Mitglieder bei Scientology, von welchen recht viele bekannt und einflussreich sind, weswegen wir uns auf dieses Land fokussieren. Bei den Verbindungen von Mitgliedern in die Politik, etc. wollen wir nur die Verbindungen zu einflussreichen Personen erheben. Das heißt:  Dazu zählen beispielsweise Leute, die dauerhaft in der Politik vertreten sind oder reiche Personen und Celebrities, welche auch viel Einfluss haben.
+
+6. **Informationen und Recherche:**
+- "John Travolta credits Scientology for his career. Travolta was a young man, pursuing an acting career, when he was invited to a Scientology meeting."
+[Quelle](https://www.foundationswithjanet.org/columns/blog-columns/why-does-scientology-attract-hollywood-s-stars/)
+- 43% der Mitglieder sind in den USA (größter Anteil)
+[Quelle](https://de.statista.com/statistik/daten/studie/36833/umfrage/verteilung-der-hauptamtlich-taetigen-scientology-mitglieder-nach-weltregionen/)
+- über die "Science-Fiction-Ideologie"
+[Quelle](https://www.rosalux.de/fileadmin/rls_uploads/pdfs/Utopie_kreativ/206/206.pdf#page=48)
+- Scientology: Religion or racket?
+[Quelle](https://core.ac.uk/reader/161976930)
+- "„Hollywood wird zu Scientollywood“
+[Quelle](https://core.ac.uk/download/pdf/16427131.pdf)
+- eine ehemaliger Insider berichtet über Scientology
+[Quelle](http://www.xenu-directory.net/news/images/199311-vaughnyoung.pdf)
+- Scientology über sich selbst
+[Quelle](http://www.scientologyreligion.de/religious-expertises/scientology-analysis-and-comparison/page1.html)
+
+
+
+
+
+
+
+
+
+
+
