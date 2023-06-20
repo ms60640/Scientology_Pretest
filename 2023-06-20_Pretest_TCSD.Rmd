@@ -1,0 +1,187 @@
+---
+title: "Pretest Scientology"
+author: "Gruppe TCSD"
+date: "20/06/2021"
+output: 
+  html_document: 
+    number_sections: yes
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(igraph)
+```
+
+# Pretest 226305
+
+## Unser Pretest
+
+Wir möchten die Verbindungen von Scientology zu Unternehmen, Vereinen und sozialen Projekten in Deutschland untersuchen. Unsere Hypothese ist, dass Scientology so versucht, Einfluss auszuüben und neue (möglicherweise vulnerable) Mitglieder zu gewinnen.
+
+### Unser Team
+
+Projektleitung: Marie Starzmann (ms606)
+Team: **Tom Cruise's Stunt Doubles (TCSD)** angelehnt an: Why is it that Tom Cruise does his own stunts in every movie? Because death is the only way out of the Church of Scientology.
+[Quelle](https://upjoke.com/scientology-jokes)
+Gruppe bestehend aus: Marie Starzmann (ms606), Jacqueline Trautmann (jt062), Silas Grittmann (sg196), Sarai Bach (rb096), Silja Kopp (sk381)
+
+### Datenzugang
+
+Die Daten bekommen wir durch Internet-Recherche über Artikel, das Impressum der Unternehmen und Social Media.
+
+### Codebuch & github 
+
+Die Dateien liegen in unserem [github-Verzeichnis](https://raw.githubusercontent.com/ms60640/Scientology_Pretest/main/2023-09-20_Pretest_Codebuch.csv).
+
+Codierungsregeln:
+
+-   Bis auf die Namen werden alle Daten numerisch erhoben.
+-   Es werden keine Sonderzeichen verwendet.
+-   Die ID für die Edgelist besteht aus
+
+```{r Datensatz einlesen, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Einlesen der Edgelist aus github link: beachte den Separator ","
+edges <- read.csv("https://raw.githubusercontent.com/ms60640/Scientology_Themenfindung/main/2023-09-20_Pretest_Edges.csv", header=T, as.is=T, sep = ",")
+
+nodes <- read.csv("https://raw.githubusercontent.com/ms60640/Scientology_Pretest/main/2023-09-20_Pretest_Nodelist.csv", header=T, as.is=T, sep = ",")
+
+# wandelt die Edgelist als Matrix um.
+edgematrix <-as.matrix(edges)
+
+# erstellt ein igraph-objekt aus der Fusion von Edge- und Nodelist
+scient <- graph_from_data_frame(d=edgematrix, vertices=nodes, directed=F)
+
+```
+
+```{r Übersicht über das Netzwerk}
+# das igraph-Objekt heisst jetzt "s" (für springer) und ist ein gerichtetes Netzwerk.
+scient
+
+is.connected(scient) # FALSE
+is.simple(scient) # FALSE
+
+```
+
+Das Netzwerk besteht aus einer Komponente und ist nicht einfach.
+
+```{r Vertex- und Edge-Attribute}
+list.vertex.attributes(scient)
+list.edge.attributes(scient)
+```
+
+Wir haben für das Netzwerk folgende Attribute erhoben (siehe Codebuch):
+
+**Node-Attribute**
+
+-   name: Bezeichnung für den Knoten
+-   type: da wir ein two-mode Netzwerk haben, werden in type die Arten der Beziehung kodiert
+-   position: 1 = CEO, 2 = SO: Teil der Scientology Organisation (nicht menschlich, nur Projekte, Initiativen, Verläge, etc.)
+-   type: 1 = Projekte, Unternehmen, Verläge, Vereine (kein Mensch), 2 = Mensch
+
+**Edge-Attribute**
+
+-   relation/Beziehungsart: 1 = CEO oder Head of oder Verantwortliche*r der Organisation, 2 = Geld gespendet, 3 = persönliche Beziehung (Freundschaft, verwandt, verheiratet, 4 = Mitglied
+
+
+# Visualisierung
+
+```{r Einfache Visualisierung, fig.height=5, fig.width=7, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+# Einstellung für two-mode Netzwerk aktivieren
+vertex.attributes(scient)$type
+vertex.attributes(scient)$position
+V(scient)[V(scient)$type == 1]$shape <- "circle"  
+V(scient)[V(scient)$type == 2]$shape <- "square"
+
+plot(scient,
+		 layout=layout_with_kk,
+		 asp=0,
+		 rescale=TRUE,
+		 vertex.frame.color=NA,
+		 vertex.label.color="black",
+		 edge.arrow.size=.3,
+		 edge.color="black",
+     main="Pretest: Scientology Gesamtnetzwerk",
+     sub="mit 15 Knoten")
+```
+
+Wie zu sehen ist, haben wir vergleichsweise recht viele Knoten und noch nicht so viele Beziehungen erhoben. Anhand der bereits bestehenden Beziehungen in unserem Netzwerk ist jedoch ersichtlich, dass die Erhebung funktioniert hat.
+
+```{r schoene Visualisierung}
+# Vorbereitung
+E(scient) [E(scient)$relation == 1]$color <- "red" # CEO oder Head of oder Verantwortliche*r der Organisation
+E(scient) [E(scient)$relation == 2]$color <- "darkgreen" # Geld gespendet
+E(scient) [E(scient)$relation == 3]$color <- "pink" # persönliche Beziehung (Freundschaft, verwandt, verheiratet
+E(scient) [E(scient)$relation == 4]$color <- "darkblue" # Mitgliedsbeziehung
+
+# Viusalisierung
+plot(scient,
+     asp=0,
+     layout=layout_with_fr,
+     vertex.size=15,
+     vertex.label.color="black",
+     vertex.label.cex=1,
+     edge.arrow.size=2,
+     edge.width = 4,
+     edge.curved=.3,
+     edge.curved=curve_multiple(scient),
+     )
+title("Scientology Gesamtnetzwerk", 
+      sub = "mit (noch) wenigen Kanten und 15 Knoten",
+      cex.main = 1, col.main= "lightblue",
+      cex.sub = 1, font.sub = 3, col.sub = "lightblue")
+
+```
+
+
+### Fragen nach dem Pretest?
+
+1.  Ist der Datenzugang sichergestellt bzw. möglich und sind die Daten belastbar und für dritte überprüfbar?
+Die Daten sind zwar schwerer zu finden, aber frei zugänglich. Gerade im Impressum einer Website müssen die richtigen Namen der verantwortlichen Personen stehen, weswegen die Daten für Dritte überprüfbar und vertrauenswürdig sind. Quellen aus Zeitungsartikeln müssen wir doppelt überprüfen, um sie auf ihre Richtigkeit zu prüfen.
+
+2.  Lässt sich ein (einfaches) Netzwerk generieren?
+Wir haben ein two-mode Netzwerk erstellt, das konnten wir erst einmal mit wenigen Knoten machen. Es gibt ein paar Organisationen, in denen mehrere unserer bisher ausgewählten Scientology Akteure Mitglied sind, was Struktur reinbringt. Schwierig ist es eher, das Netzwerk einzugrenzen.Wir haben kein Kantengewicht, deswegen lässt es sich nicht simplifizieren.
+
+3.  Wird das Netzwerk mit weiteren Knoten umfangreicher und komplexer oder bleibt es voraussichtlich bei wenigen Kanten?
+
+Es wird auf jeden Fall komplexer. Das schwierige ist, herauszufinden, welche Akteure in welchen Organisationen und außerhalb miteinander verknüpft sind. (Akteure können ja jeweils Mitglied in einer Organisation sein und trotzdem nichts miteinander zu tun haben).
+4.  Muss der Datenbestand ausgeweitet werden?
+Der Datenbestand muss auf jeden Fall ausgeweitet werden. Um das Netzwerk von Scientology in Deutschland besser zu beleuchten, müssen weitere Recherchen folgen, um die ersten Knoten eventuell verknüpfen zu können.
+
+5.  Ist eine sinnvolle Aufteilung der Datenerhebung im Team möglich (Umfang Datenerhebung pro Person ca. 10-15 Stunden)? Und falls nein, warum nicht?
+Eine gerechte Aufgabenverteilung ist hinsichtlich der Scientology-Organisationen- und Personen gut möglich. Jede*r konnte sich mit 1-2 Organisationen aufeinandersetzen und diese dann unser Google Docs Dokument eintragen. Für die spätere Recherche kann es aber durchaus sein, dass man zu manchen Businesses mehr und zu manchen wiederum weniger herausfinden kann. Dann müssen die Aufgaben vielleicht nochmal anders verteilt werden.
+
+# Herausforderungen
+**Dokumentieren Sie bitte bei der Abgabe,**
+- welche Herausforderungen Sie beim Pretest hatten (z.B. Auswahl des Samples),
+Herausforderungen waren für uns, dass die Daten nicht leicht und offen einsehbar waren. Das hat uns die bisherige Personensuche ein bisschen erschwert. Dadurch ist es uns auch anfänglich schwer gefallen, eine konkrete Fragestellung bzw. einen Fokus zu finden, die wir mithilfe des Netzwerks beantworten wollen. Mittlerweile sind wir uns aber sicher in unserer Forschungsfrage.
+
+- welche Edge-Attribute für Sie besonders wichtig sind (denken Sie hier auch an das Filtern von Netzwerken)
+Unsere Edge-Attribute umfassen derzeit:
+1 = CEO oder Head of oder Verantwortliche*r der Organisation, 2 = Geld gespendet, 3 = persönliche Beziehung (Freundschaft, verwandt, verheiratet, 4 = Mitglied
+Dies erscheinen uns die wichtigsten Beziehungen zu sein, die man darstellen kann. Sie eignen sich auch, um Teilnetzwerke nach Edge-Attributen zu erstellen. Interessant wäre beispielsweise ein Geldspender-Netzwerk oder eine CEO-Netzwerk mit den Hauptverantwortlichen, um zu sehen, ob diese auch am meisten Beziehungen haben.
+
+- welche Node-Attribute besonders relevant sind (auch hier: Teilnetzwerke),
+Besonders relevant ist das Attribut „type“, um zentrale Organisationen von Individuen unterscheiden zu können.  Das Attribut „Position“ ist auch wichtig, um besonders wichtige Mitglieder in einer Organisation zu identifizieren.
+
+- wie der Aufwand der Datenerhebung war,
+Der Aufwand bei der Datenerhebung ist hoch aber stemmbar. Denn der Datenzugang ist möglich, jedoch mit einem gewissen Rechercheaufwand verbunden. Die Quellen sind größtenteils Artikel und Blogs. Um sicherzugehen, dass man keine falschen Knoten mit aufnimmt, müssen die Quellen teilweise noch verifiziert werden.
+
+- auf was Sie besonders achten müssen bei der Datenerhebung.
+Wie bei allen Erhebungen, müssen wir sehr darauf achten keine Fehler in unseren Edge- und Nodelists zu machen, weil sonst das ganze Netzwerk nicht mehr funktioniert. Auch müssen wir uns gut untereinander organisieren, damit wir die gleiche Bzeihung beispielsweise nicht doppelt erheben.
+
+## Unsere Quellen:
+https://immobilienboerse.com/
+https://www.verfassungsschutz.bayern.de/weitere_aufgaben/scientology/struktur/index.html
+http://www.jugend-fuer-menschenrechte.org/ueber-uns/impressum-kontakt/
+https://www.sag-nein-zu-drogen.de/impressum.html
+https://publikum.net/scientology-stuttgart/
+https://www.scientology.de/faq/church-management/what-is-the-sea-organization.html
+https://antiscientologyblog.com/2023/04/13/de-weitere-scientology-immobilienhaie-in-munchen/
+https://antiscientologyblog.com/2023/06/09/de-bayern-ein-weiteres-scientology-ehepaar-in-den-bereichen-ballett-und-edv-in-pliening-bei-munchen/
+https://taz.de/Fuer-Scientology-ist-Deutschland-einer-der-wichtigsten-Standorte-Hier-erwirschaftet-die-Organisation-ein-Drittel-ihres-weltweiten-Umsatzes-von-hier-kann-die-Ausdehnung-in-die-Staaten-des-ehemaligen-Ostblocks-am-besten-vorangetrieben-werden/!1374387/
+
+
